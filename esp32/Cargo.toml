@@ -1,6 +1,6 @@
 [package]
 name = "carmen-esp32"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 default-run = "carmen-esp32"
 description = "Where in the World? on an ESP32-S3 with an ILI9341 touch screen and a piezo."
