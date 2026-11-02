@@ -16,7 +16,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [rust, javascript-typescript, actions]
+        # Rust (both editions and the server), the web page's JavaScript,
+        # Python (esp32/tools) and the workflows.
+        language: [rust, javascript-typescript, python, actions]
 
     steps:
       - name: Checkout
@@ -30,7 +32,7 @@ jobs:
           # macroquad's loader is vendored as it ships; findings there aren't ours to fix.
           config: |
             paths-ignore:
-              - web/mq_js_bundle.js
+              - game/web/mq_js_bundle.js
 
       - name: Analyse
         uses: github/codeql-action/analyze@v4

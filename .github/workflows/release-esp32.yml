@@ -1,14 +1,14 @@
-name: Release
+name: Release the ESP32 firmware
 
-# Push a tag like v0.2.0 (matching Cargo.toml's version) to build the firmware
-# and attach it to a GitHub release as one image, ready for
+# Push a tag like esp32-v0.2.0 (matching esp32/Cargo.toml's version) to build
+# the firmware and attach it to a GitHub release as one image, ready for
 # `espflash write-bin 0x0 carmen-esp32.bin`: bootloader, partition table and
 # game together, so flashing it needs no toolchain. It's built without
-# cfg.toml, so it plays offline: for the bureau's server, build your own with
+# cfg.toml, so it plays offline: for the records server, build your own with
 # your WiFi settings.
 on:
   push:
-    tags: ['v*']
+    tags: ['esp32-v*']
 
 permissions:
   contents: read
@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    defaults:
+      run:
+        working-directory: esp32
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -25,7 +28,7 @@ jobs:
       - name: Check the tag matches Cargo.toml
         run: |
           version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
-          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME but Cargo.toml says $version"; exit 1; }
+          test "esp32-v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME but esp32/Cargo.toml says $version"; exit 1; }
 
       - name: Set up the esp toolchain
         uses: esp-rs/xtensa-toolchain@v1.7.0
@@ -37,7 +40,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.espressif
-          key: esp-idf-${{ runner.os }}-${{ hashFiles('.cargo/config.toml', 'sdkconfig.defaults') }}
+          key: esp-idf-${{ runner.os }}-${{ hashFiles('esp32/.cargo/config.toml', 'esp32/sdkconfig.defaults') }}
 
       - name: Build
         run: cargo build --release
@@ -58,7 +61,12 @@ jobs:
             target/xtensa-esp32s3-espidf/release/carmen-esp32 carmen-esp32.bin
           sha256sum carmen-esp32.bin > SHA256SUMS
 
+      # The game's releases share this repository, so the notes only cover the
+      # ESP32's changes since its own last tag.
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes carmen-esp32.bin SHA256SUMS
+        run: |
+          previous=$(gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName -q '[.[].tagName | select(startswith("esp32-v"))][0] // empty')
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "ESP32 $GITHUB_REF_NAME" --generate-notes \
+            ${previous:+--notes-start-tag "$previous"} carmen-esp32.bin SHA256SUMS

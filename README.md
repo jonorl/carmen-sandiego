@@ -71,7 +71,35 @@ cargo run
 
 **Browser**: `cd game && ./build-web.sh` builds it into `game/dist/`, which works on any static web host.
 
-**ESP32-S3**: an ESP32-S3 DevKitC-1 N16R8 with a 2.8" ILI9341 touch screen and a passive piezo, all on a breadboard with no soldering. Wiring, building and flashing are in [`esp32/README.md`](esp32/README.md).
+**ESP32-S3**: an ESP32-S3 DevKitC-1 N16R8 with a 2.8" ILI9341 touch screen and a passive piezo, all on a breadboard with no soldering, wired as below. Building and flashing are in [`esp32/README.md`](esp32/README.md).
+
+### Wiring
+
+![Wiring diagram: the breadboard power module's 5 V to the screen's VCC and the board's 5V pin, the screen's SPI and touch pins to GPIO 6 to 13, its backlight to 3V3, and the piezo to GPIO 4 and ground](esp32/docs/wiring.svg)
+
+| Module pin | ESP32-S3 | Note |
+|---|---|---|
+| VCC | 5V | through the module's regulator; leave J1 open |
+| GND | GND | |
+| CS | GPIO 10 | |
+| RESET | GPIO 8 | |
+| DC | GPIO 9 | |
+| SDI (MOSI) | GPIO 11 | |
+| SCK | GPIO 12 | |
+| LED | 3V3 | backlight, always on |
+| SDO (MISO) | not connected | never read, and on these modules it can hold the shared line against the touch chip |
+| T_CLK | GPIO 12 | shared with SCK |
+| T_CS | GPIO 7 | |
+| T_DIN | GPIO 11 | shared with SDI |
+| T_DO | GPIO 13 | |
+| T_IRQ | GPIO 6 | |
+| Piezo | GPIO 4 and GND | either way round; GND leg to GPIO 5 to drive it from both sides if too quiet |
+
+GPIO 10-13 are SPI2's own pins, so the screen can run at 40 MHz. Kept clear: 0, 3, 45 and 46 (boot straps), 19 and 20 (USB), 26-37 (flash and PSRAM), 43 and 44 (the console) and the RGB LED (38 or 48).
+
+The board's 5V pin only takes power in, so feed it and the screen from one 5 V supply. A 5.1 V USB supply into the breadboard power module's USB socket works (the photo above); a 12 V adapter through that module's own regulator overheats within a minute.
+
+`esp32/README.md` has checks for the wiring once it's flashed (`--bin pins`, `screen`, `touch`, `sound`).
 
 ## Editing the data
 

@@ -1,15 +1,15 @@
 # carmen-esp32
 
-[![CI](https://github.com/jonorl/carmen-esp32/actions/workflows/ci.yml/badge.svg)](https://github.com/jonorl/carmen-esp32/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/jonorl/carmen-esp32/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonorl/carmen-esp32/actions/workflows/codeql.yml)
+[![CI](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml)
 [![Rust 2024](https://img.shields.io/badge/rust-2024_edition-orange?logo=rust)](https://doc.rust-lang.org/edition-guide/rust-2024/)
 [![ESP32-S3](https://img.shields.io/badge/runs_on-ESP32--S3-red)](https://www.espressif.com/en/products/socs/esp32-s3)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 
 Where in the World? on an ESP32-S3: a standalone, touch-screen version of
-[Carmen](https://github.com/jonorl/carmen), the family-edition remake of
-*Where in the World is Carmen Sandiego?*. A separate project: it copies what
-it needs from the game rather than sharing code with it.
+[the game](../game) ("Carmen" below), a remake of
+*Where in the World is Carmen Sandiego?*. It copies what it needs from the
+game rather than sharing code with it.
 
 <p align="center">
   <img src="docs/demo.gif" alt="A case from start to finish, recorded from the emulator: signing in at headquarters, the briefing, an interview, the map and a flight, a henchman, the crime computer and its printer, a warning in the final city, the chase, the jail and a promotion" height="390">
@@ -93,7 +93,7 @@ builds, flashes (with `partitions.csv`, an 8 MB app partition) and opens the
 serial monitor.
 
 Without the toolchain, flash a release instead: each one on the
-[releases page](https://github.com/jonorl/carmen-esp32/releases) has
+[releases page](https://github.com/jonorl/carmen-sandiego/releases) (the `esp32-v` ones) has
 `carmen-esp32.bin`, the bootloader, partition table and game in one image.
 With [espflash](https://github.com/esp-rs/espflash) installed:
 
@@ -103,7 +103,8 @@ espflash write-bin 0x0 carmen-esp32.bin
 
 Releases are built without `cfg.toml`, so they play offline: for the bureau's
 server, build your own with your WiFi settings. Push a tag matching
-`Cargo.toml`'s version (`v0.1.0`) to make one (`.github/workflows/release.yml`).
+`Cargo.toml`'s version (`esp32-v0.1.0`) to make one (`.github/workflows/release-esp32.yml`
+at the repository's top level).
 
 The board's 5V pin only takes power in, so feed it and the screen from one
 5 V supply. A 5.1 V USB supply into the breadboard power module's USB socket
@@ -165,15 +166,15 @@ Copied from the game at commit `4e0a45c`, then freed of macroquad:
   language, so it starts in English until one is chosen; the choice is saved
   through `src/device/storage.rs` (flash) instead of the game's files.
 - `countries.json`, `suspects.json`
-- `assets/suspects/`: the suspects' dossier photos (66x96), made from photos
-  of the family by Carmen's `tools/portrait.sh`.
+- `assets/suspects/`: the suspects' dossier photos (66x96), made by Carmen's
+  `tools/portrait.sh` (sources in `assets/suspects/CREDITS.md`).
 - `assets/sprites/`: the original's animation frames, traced by Carmen from
   recordings of it.
 - The tunes: `src/device/tunes.rs` is written from Carmen's recordings
   (`assets/sounds/`, not copied) by `tools/transcribe.py`, which follows each
   tune's melody (the strongest pitch above the bass) and raises it by
   octaves into the piezo's loud range:
-  `python3 tools/transcribe.py ../carmen/assets/sounds` (needs ffmpeg and
+  `python3 tools/transcribe.py ../game/assets/sounds` (needs ffmpeg and
   numpy).
 - `assets/fonts/`: Pixelify Sans, VT323 and Noto Sans (₹ only), already cut
   down to the characters the game shows, with their SIL OFL licences.

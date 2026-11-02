@@ -1,0 +1,135 @@
+name: CI
+
+# The deploy workflows only run on main; this one also checks pull requests,
+# so a change can be seen to pass before it's merged. It runs every job on
+# every change rather than filtering by folder, so the required checks never
+# sit waiting for a job that was skipped.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  game:
+    name: Game
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: game
+    # For the server's tests (sqlx::test makes a database per test).
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # rustup is on GitHub's runners; with no arguments it installs what rust-toolchain.toml names.
+      - name: Set up Rust
+        run: rustup toolchain install
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: game
+
+      # The desktop build links against these.
+      - name: Install system libraries
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libx11-dev libxi-dev libgl1-mesa-dev libasound2-dev
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Lint
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Test
+        run: cargo test --workspace
+
+      - name: Check the data files
+        run: cargo run -- --check
+
+  # The ESP32's game code on the computer, through tools/emulator: formatting,
+  # lints and the rules' tests (which can't run on the device).
+  esp32-test:
+    name: ESP32 tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: esp32
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # esp32/'s toolchain is the ESP32's; the emulator's is stable.
+      - name: Set up Rust
+        run: rustup toolchain install stable --component rustfmt,clippy
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: esp32/tools/emulator
+
+      - name: Format
+        run: rustfmt +stable --edition 2024 --check $(git ls-files '*.rs')
+
+      - name: Lint
+        working-directory: esp32/tools/emulator
+        run: cargo clippy --release --all-targets -- -D warnings
+
+      - name: Test
+        working-directory: esp32/tools/emulator
+        run: cargo test --release
+
+  # The firmware itself, for the ESP32-S3: lints for the code only the device
+  # builds (main.rs, the display, touch, WiFi, sound, flash and the checks in
+  # src/bin), then a build. Without cfg.toml it has no network settings,
+  # which is enough to know it compiles and links.
+  esp32-firmware:
+    name: ESP32 firmware
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: esp32
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up the esp toolchain
+        uses: esp-rs/xtensa-toolchain@v1.7.0
+        with:
+          buildtargets: esp32s3
+          ldproxy: true
+
+      # ESP-IDF is a large download, made by the first build.
+      - name: Cache ESP-IDF
+        uses: actions/cache@v6
+        with:
+          path: ~/.espressif
+          key: esp-idf-${{ runner.os }}-${{ hashFiles('esp32/.cargo/config.toml', 'esp32/sdkconfig.defaults') }}
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: esp32
+
+      # The esp toolchain's clippy asks for a const initialiser that lang.rs already has.
+      - name: Lint
+        run: cargo clippy --release --bins --lib -- -D warnings -A clippy::missing_const_for_thread_local
+
+      - name: Build
+        run: cargo build --release

@@ -1,0 +1,48 @@
+# Grouped so a week's updates arrive as one pull request per ecosystem and folder.
+version: 2
+updates:
+  # The game, the server and their shared crate (one workspace).
+  - package-ecosystem: cargo
+    directory: /game
+    schedule:
+      interval: weekly
+    groups:
+      game:
+        patterns: ["*"]
+
+  - package-ecosystem: docker
+    directory: /game/server
+    schedule:
+      interval: weekly
+
+  # Bump it together with the server's build image (game/server/Dockerfile).
+  - package-ecosystem: rust-toolchain
+    directory: /game
+    schedule:
+      interval: weekly
+
+  # The firmware. Its toolchain is the esp one, which Dependabot can't update.
+  - package-ecosystem: cargo
+    directory: /esp32
+    schedule:
+      interval: weekly
+    groups:
+      esp32:
+        patterns: ["*"]
+
+  # The emulator, which also runs the ESP32's tests.
+  - package-ecosystem: cargo
+    directory: /esp32/tools/emulator
+    schedule:
+      interval: weekly
+    groups:
+      emulator:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

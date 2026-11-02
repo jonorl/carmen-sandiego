@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in the game or the records server doesn't work as it should.
+description: Something in the game, the records server or the ESP32 version doesn't work as it should.
 labels: [bug]
 body:
   - type: textarea
@@ -29,12 +29,20 @@ body:
         - Desktop (Linux)
         - Desktop (Windows)
         - Desktop (macOS)
+        - ESP32-S3
     validations:
       required: true
   - type: input
-    id: browser
+    id: version
     attributes:
-      label: Browser or OS version
+      label: Browser, OS or release
+      description: For the ESP32, the release or commit, and the board, screen and power supply (resets and crashes are often power).
+  - type: textarea
+    id: log
+    attributes:
+      label: Serial monitor output (ESP32)
+      description: What `cargo run --release` (or `espflash monitor`) printed around the problem, if you have it.
+      render: text
   - type: dropdown
     id: language
     attributes:

@@ -258,7 +258,7 @@ pub(crate) const ABOUT_ES: &str = "Esta es una recreación del clásico de los 9
                         proyecto se hizo con el único fin de divertirse.";
 /// (label in English, in Spanish, as shown, address).
 pub(crate) const LINKS: [(&str, &str, &str, &str); 2] = [
-    ("Code", "Código", "github.com/jonorl/carmen", "https://github.com/jonorl/carmen"),
+    ("Code", "Código", "jonorl/carmen-sandiego", "https://github.com/jonorl/carmen-sandiego"),
     ("Website", "Sitio web", "jonathan-orlowski.dev", "https://jonathan-orlowski.dev"),
 ];
 

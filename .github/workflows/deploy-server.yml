@@ -4,11 +4,15 @@ on:
   push:
     branches: [main]
     paths:
-      - 'server/**'
-      - 'shared/**'
-      - 'Cargo.lock'
+      - 'game/server/**'
+      - 'game/shared/**'
+      - 'game/Cargo.lock'
       - '.github/workflows/deploy-server.yml'
   workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: game
 
 jobs:
   build-and-deploy:
@@ -42,6 +46,8 @@ jobs:
 
       - name: Cache Rust build
         uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: game
 
       - name: Test
         run: cargo test -p carmen-shared -p carmen-server
@@ -56,12 +62,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      # The whole repository is the context: the server shares a crate with the game.
+      # The whole of game/ is the context: the server shares a crate with the game.
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          context: .
-          file: ./server/Dockerfile
+          context: game
+          file: game/server/Dockerfile
           push: true
           tags: ghcr.io/jonorl/carmen-api:latest
           cache-from: type=gha

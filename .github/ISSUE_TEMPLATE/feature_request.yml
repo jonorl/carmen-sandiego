@@ -1,5 +1,5 @@
 name: Idea
-description: A feature, a board or screen to support, or a change to the device.
+description: A new country, feature, board or screen, or a change to the game.
 labels: [enhancement]
 body:
   - type: textarea
@@ -12,4 +12,4 @@ body:
     id: why
     attributes:
       label: Why
-      description: What it would add. Changes to the game's rules, clues or countries go to Carmen instead.
+      description: What it would add for players. If it changes the original's rules, say how.

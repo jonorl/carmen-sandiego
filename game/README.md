@@ -1,33 +1,33 @@
 # Where in the World?
 
-[![CI](https://github.com/jonorl/carmen/actions/workflows/ci.yml/badge.svg)](https://github.com/jonorl/carmen/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/jonorl/carmen/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonorl/carmen/actions/workflows/codeql.yml)
-[![Deploy web](https://github.com/jonorl/carmen/actions/workflows/deploy-web.yml/badge.svg)](https://github.com/jonorl/carmen/actions/workflows/deploy-web.yml)
-[![Deploy server](https://github.com/jonorl/carmen/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/jonorl/carmen/actions/workflows/deploy-server.yml)
+[![CI](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml)
+[![Deploy web](https://github.com/jonorl/carmen-sandiego/actions/workflows/deploy-web.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/deploy-web.yml)
+[![Deploy server](https://github.com/jonorl/carmen-sandiego/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/deploy-server.yml)
 [![Rust 2024](https://img.shields.io/badge/rust-2024_edition-orange?logo=rust)](https://doc.rust-lang.org/edition-guide/rust-2024/)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
-[![Play it](https://img.shields.io/badge/play-in_the_browser-brightgreen)](https://jonathan-orlowski.dev/carmen)
+[![Play it](https://img.shields.io/badge/play-in_the_browser-brightgreen)](https://jonathan-orlowski.dev/carmen-sandiego/)
 
-A remake of Brøderbund's 1990 *Where in the World is Carmen Sandiego?*, in Rust. The thieves are your family and friends, and the facts are up to date. It runs on desktops and in the browser, including on phones, in English or Spanish (Argentina).
+A remake of Brøderbund's 1990 *Where in the World is Carmen Sandiego?*, in Rust. The thieves are a cast of satirised celebrities and fictional rogues, and the facts are up to date. It runs on desktops and in the browser, including on phones, in English or Spanish (Argentina).
 
-Play it at **https://jonathan-orlowski.dev/carmen**.
+Play it at **https://jonathan-orlowski.dev/carmen-sandiego/**.
 
 ![A case from start to finish: the briefing at headquarters, a flight, a henchman, the crime computer, a warning in the final city, the chase and the jail](docs/demo.gif)
 
 In the browser, the whole game is a 1.3 MB download: small enough for a 1.44 MB floppy disk, if you still have one. The desktop versions are about 2.3 MB, since they bring their own graphics, sound and secure connections instead of borrowing the browser's.
 
-There's also a standalone version for an ESP32-S3 with a 2.8" touch screen and a piezo for the tunes: [carmen-esp32](https://github.com/jonorl/carmen-esp32). It's a separate project, but it shares the records server, so a detective's rank follows them between the board, the browser and the desktop.
+There's also a standalone version for an ESP32-S3 with a 2.8" touch screen and a piezo for the tunes: [`esp32/`](../esp32). It keeps its own copies of the game's code and data, but it shares the records server, so a detective's rank follows them between the board, the browser and the desktop.
 
 ## Playing
 
-Someone in the family has stolen a treasure. Follow the trail around the world, get a warrant from the crime computer and make the arrest before the deadline.
+One of the usual suspects has stolen a treasure. Follow the trail around the world, get a warrant from the crime computer and make the arrest before the deadline.
 
 - **Investigate** (the magnifying glass): each city has three places, each with a witness. On the right trail, witnesses hint at the next country (flags, money, landmarks, food, language) and sometimes describe the thief. In a wrong city nobody has seen a thing, so fly back.
 - **Depart** (the plane): four flights leave every city. Pick one from the list or click its dot on the map.
 - **Crime computer**: enter what you've learned. When only one person fits, you get a warrant.
 - **Notes** (the notebook): everything witnesses have told you, the deadline and your warrant.
 
-S.U.R.M.E.'s henchmen show up when you're on the right track, and the final city gets dangerous. When witnesses say the thief is still in town, you're close: one of the three places is the hideout. With a warrant for the right person you watch the arrest. Without one, they get away.
+Henchmen of S.U.R.M.E. (the Secret Union of Rapscallions, Mobsters and Evildoers) show up when you're on the right track, and the final city gets dangerous. When witnesses say the thief is still in town, you're close: one of the three places is the hideout. With a warrant for the right person you watch the arrest. Without one, they get away.
 
 The clock starts on Monday at 9 a.m. Each interview takes 3 hours, longer flights take longer, and you sleep from 11 p.m. to 7 a.m.
 
@@ -48,11 +48,11 @@ As in the original, you start as a Rookie and are promoted as you make arrests. 
 | Ace Detective | 10 | 6 | about 1 wrong turn |
 | Super Sleuth | 15 | 6 | almost none |
 
-Your arrests are saved under your name, which can be up to 8 characters. There are no passwords: it's for family and friends. They're kept on the bureau's server, so your rank follows you to any device, and on the device itself, so the game carries on offline and catches up later: in the browser's storage, or on a computer in `~/.local/share/where-in-the-world/` (Linux), `%APPDATA%\where-in-the-world\` (Windows) or `~/Library/Application Support/where-in-the-world/` (macOS). Bureau → Detective roster lists everyone.
+Your arrests are saved under your name, which can be up to 8 characters. There are no passwords: a name is a detective. They're kept on the bureau's server, so your rank follows you to any device, and on the device itself, so the game carries on offline and catches up later: in the browser's storage, or on a computer in `~/.local/share/where-in-the-world/` (Linux), `%APPDATA%\where-in-the-world\` (Windows) or `~/Library/Application Support/where-in-the-world/` (macOS). Bureau → Detective roster lists everyone.
 
 ## Downloading
 
-Ready-built games for Linux, Windows and macOS are on the [releases page](https://github.com/jonorl/carmen/releases): one file each, with the data, fonts and sounds built in.
+Ready-built games for Linux, Windows and macOS are on the [releases page](https://github.com/jonorl/carmen-sandiego/releases) (the `game-v` ones): one file each, with the data, fonts and sounds built in.
 
 - **macOS**: the build isn't signed, so the first time, right-click it and choose Open, or run `xattr -d com.apple.quarantine carmen`.
 - **Linux**: it needs OpenGL, X11 and ALSA, which desktop distributions already have.
@@ -78,7 +78,7 @@ Options go after `--`, for example `cargo run -- --seed 42`:
 
 `./build-web.sh` builds the browser version into `dist/`. Try it with `python3 -m http.server -d dist 8000`. The files in `dist/` work on any static web host; `_headers` (the Content-Security-Policy) applies on Cloudflare Pages and is ignored elsewhere.
 
-Pushing to `main` deploys it to Cloudflare Pages through GitHub Actions (`.github/workflows/deploy-web.yml`). That needs the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets and a Pages project called `carmen`.
+Pushing to `main` deploys it to Cloudflare Pages through GitHub Actions (`.github/workflows/deploy-web.yml`). That needs the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets and a Pages project called `carmen-sandiego`.
 
 ### The server
 
@@ -107,11 +107,11 @@ The game calls `https://carmen-api.jonathan-orlowski.dev`. Build it with `CARMEN
 
 `CLAUDE.md` describes every file and how the pieces fit together. Day to day:
 
-- `cargo test --workspace` runs the tests, including hundreds of simulated cases in both languages. The server's tests need `DATABASE_URL` pointing at a Postgres they can create databases on (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+- `cargo test --workspace` runs the tests, including hundreds of simulated cases in both languages. The server's tests need `DATABASE_URL` pointing at a Postgres they can create databases on (see [CONTRIBUTING.md](../CONTRIBUTING.md)).
 - `cargo clippy --workspace --all-targets -- -D warnings` must pass: CI treats warnings as errors.
 - `cargo fmt --all` formats the code at 140 columns (`rustfmt.toml`).
 
-CI (`.github/workflows/ci.yml`) runs all of these and `--check` on every push and pull request, and pushes to `main` only deploy if the tests and `--check` pass. Pushing a tag like `v0.2.0`, matching the version in `Cargo.toml`, builds the desktop games and publishes them as a release (`.github/workflows/release.yml`).
+CI (`.github/workflows/ci.yml`) runs all of these and `--check` on every push and pull request, and pushes to `main` only deploy if the tests and `--check` pass. Pushing a tag like `game-v0.2.0`, matching the version in `Cargo.toml`, builds the desktop games and publishes them as a release (`.github/workflows/release-game.yml`).
 
 The fonts are cut down to the characters the game shows, to keep the download small. If a new character shows up blank (a name in another alphabet, a new currency sign), add its range to `tools/subset-fonts.sh`, put the full font back in `assets/fonts/` and run the script.
 
@@ -170,7 +170,7 @@ A clue should point to its country without naming it or the arrival city. Clues 
 
 ## Contributing
 
-Bug reports, clue corrections and new countries are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md) and the [code of conduct](CODE_OF_CONDUCT.md). Report security problems privately, as [SECURITY.md](SECURITY.md) explains.
+Bug reports, clue corrections and new countries are welcome: see [CONTRIBUTING.md](../CONTRIBUTING.md) and the [code of conduct](../CODE_OF_CONDUCT.md). Report security problems privately, as [SECURITY.md](../SECURITY.md) explains.
 
 ## Credits
 
@@ -180,4 +180,4 @@ Bug reports, clue corrections and new countries are welcome: see [CONTRIBUTING.m
 
 ## Licence
 
-The code is under the MIT licence (`LICENSE`). That doesn't cover the original game's art and sounds traced into `assets/sprites/` and `assets/sounds/`, which belong to their owners, the photos of real people in `assets/suspects/`, or the fonts, which keep their own licences.
+The code is under the MIT licence (`LICENSE`). That doesn't cover the original game's art and sounds traced into `assets/sprites/` and `assets/sounds/`, which belong to their owners, the dossier photos in `assets/suspects/` (sources in its `CREDITS.md`), or the fonts, which keep their own licences.
