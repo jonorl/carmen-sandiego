@@ -291,7 +291,15 @@ fn rgba_files(dir: &str, out_dir: &std::path::Path, prefix: &str) -> Vec<(String
         let mut reader = decoder.read_info().expect("a readable PNG");
         let mut buf = vec![0; reader.output_buffer_size().expect("a PNG size")];
         let info = reader.next_frame(&mut buf).expect("a PNG frame");
-        std::fs::write(out_dir.join(format!("{prefix}{stem}.rgba")), &buf[..info.buffer_size()]).unwrap();
+        let pixels = &buf[..info.buffer_size()];
+        // EXPAND and ALPHA leave a greyscale PNG (an old black-and-white photo, say) as grey and alpha,
+        // two bytes a pixel, but everything reading these files takes four.
+        let rgba = match info.color_type {
+            png::ColorType::Rgba => pixels.to_vec(),
+            png::ColorType::GrayscaleAlpha => pixels.as_chunks::<2>().0.iter().flat_map(|&[g, a]| [g, g, g, a]).collect(),
+            other => panic!("{}: unexpected colour type {other:?} after expanding", path.display()),
+        };
+        std::fs::write(out_dir.join(format!("{prefix}{stem}.rgba")), rgba).unwrap();
         out.push((stem, info.width, info.height));
     }
     out
