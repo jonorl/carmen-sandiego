@@ -45,12 +45,8 @@ jobs:
       - name: Check the data files
         run: cargo run -- --check
 
-      # No server yet for the public edition: progress stays on each device rather
-      # than landing in the family edition's records. Set the public API here once it exists.
       - name: Build
         run: ./build-web.sh
-        env:
-          CARMEN_API: ''
 
       # Cloudflare's own Pages builds have no Rust, so the build is uploaded as it is.
       - name: Deploy to Cloudflare Pages

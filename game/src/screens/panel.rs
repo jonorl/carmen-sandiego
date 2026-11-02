@@ -654,7 +654,7 @@ pub(crate) fn help_paras() -> Vec<Para> {
     let head = |t: &str| para(t, BIG, true, YELLOW, 0.0);
     if lang() == Lang::Es {
         return vec![
-            body("Alguien de la familia robó un tesoro y anda saltando por el mundo. Seguí el rastro hasta el escondite y hacé el arresto antes de que venza el plazo.".to_string()),
+            body("Uno de los sospechosos de siempre robó un tesoro y anda saltando por el mundo. Seguí el rastro hasta el escondite y hacé el arresto antes de que venza el plazo.".to_string()),
             body("Cada arresto te acerca a un ascenso, de Aprendiz a Supersabueso, y los casos de cada rango son más difíciles. Tus arrestos se guardan con tu nombre.".to_string()),
             head("Investigar"),
             body(format!("La lupa abre una ventana con los tres lugares de la ciudad, cada uno con un testigo; los que ya visitaste se ven en gris. Si vas por buen camino, los testigos dan pistas sobre el próximo país (banderas, monedas, monumentos, comidas, idiomas...) y a veces describen a quien robó. En una ciudad equivocada nadie vio nada, así que volvé. Cada entrevista lleva {INTERVIEW_HOURS} horas.")),
@@ -669,7 +669,7 @@ pub(crate) fn help_paras() -> Vec<Para> {
         ];
     }
     vec![
-        body("A family member has stolen a treasure and is hopping around the world. Follow the trail to their hideout and arrest them before the deadline.".to_string()),
+        body("One of the usual suspects has stolen a treasure and is hopping around the world. Follow the trail to their hideout and arrest them before the deadline.".to_string()),
         body("Arrests get you promoted, from Rookie up to Super Sleuth, and each rank's cases are harder. Your arrests are saved under your name.".to_string()),
         head("Investigate"),
         body(format!("The magnifying glass opens a window showing the city's three places, each with a witness; ones you've visited are grey. On the right trail, witnesses hint at the next country (flags, money, landmarks, food, language...) and sometimes describe the thief. In a wrong city nobody has seen a thing, so fly back. Each interview takes {INTERVIEW_HOURS} hours.")),

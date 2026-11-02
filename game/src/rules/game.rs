@@ -14,7 +14,7 @@ pub fn game_title() -> &'static str {
 }
 
 pub fn agency() -> &'static str {
-    tr("Family Bureau of Investigation", "Agencia Familiar de Investigaciones")
+    tr("Interpol", "Interpol")
 }
 
 pub const START_HOUR: i64 = 9; // every case starts Monday 09:00
@@ -712,8 +712,8 @@ impl Game {
         self.say(
             Tone::Plain,
             tr(
-                format!("{saw} {who} fleeing the scene, and our files say it's someone in the family."),
-                format!("{saw} {who} huyendo del lugar, y según nuestros archivos es alguien de la familia."),
+                format!("{saw} {who} fleeing the scene, and our files say it's one of the usual suspects."),
+                format!("{saw} {who} huyendo del lugar, y según nuestros archivos es uno de los sospechosos de siempre."),
             ),
         );
         // "Sunday, 9 a.m." already ends the sentence.
