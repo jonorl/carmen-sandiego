@@ -2,7 +2,7 @@
 name = "carmen"
 version = "0.1.0"
 edition = "2024"
-description = "Where in the World? A family-and-friends detective chase."
+description = "Where in the World? A fan remake of the 1990 detective chase."
 
 [workspace]
 members = ["shared", "server"]

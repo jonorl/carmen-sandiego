@@ -1,6 +1,6 @@
 # carmen-esp32
 
-The ESP32-S3 edition of the game in `../game` ("Carmen" below), played on a 320x240 ILI9341 touch screen with a piezo. This is the `esp32/` folder of the carmen-sandiego repository; read the top-level `CLAUDE.md` too. Files taken from the game are copies, listed with the commit they came from under "Copied from Carmen" in `README.md`; update that list when copying more.
+The ESP32-S3 edition of the game in `../game` ("Carmen" below), played on a 320x240 ILI9341 touch screen with a piezo. This is the `esp32/` folder of the carmen-sandiego repository; read the top-level `CLAUDE.md` too. Files taken from the game are copies, listed under "Copied from Carmen" in `README.md`; update that list when copying more.
 
 Hardware, wiring and commands are in `README.md`. `docs/wiring.svg`, the wiring diagram, is drawn by `tools/wiring.py` from the same pins as the README's table: change both together.
 

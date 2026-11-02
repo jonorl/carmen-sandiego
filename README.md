@@ -10,6 +10,8 @@ A fan remake of Brøderbund's 1990 *Where in the World is Carmen Sandiego?*, in 
 
 Play it at **https://jonathan-orlowski.dev/carmen-sandiego/**.
 
+![A case from start to finish in the browser: the briefing at headquarters, an interview, a flight, a henchman, the crime computer and its warrant, a warning in the final city, the chase and the jail](game/docs/demo.gif)
+
 <p align="center">
   <img src="esp32/docs/demo.gif" alt="A case from start to finish on the ESP32 version, recorded from its emulator: signing in at headquarters, the briefing, an interview, the map and a flight, a henchman, the crime computer and its printer, a warning in the final city, the chase, the jail and a promotion" height="390">
   <img src="esp32/docs/device.webp" alt="The device at headquarters: the ESP32-S3 board, the touch screen showing the printer and the keyboard, and the piezo on a breadboard" height="390">

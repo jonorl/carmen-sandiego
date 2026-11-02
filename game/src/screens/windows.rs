@@ -251,11 +251,11 @@ pub(crate) fn close_button(ui: &mut Ui, close_r: Rect) -> bool {
 }
 
 pub(crate) const ABOUT: &str = "This is a recreation of the 1990s Where in the World is Carmen Sandiego? from Brøderbund Software, \
-                     remade in Rust and compiled to WebAssembly. The suspects are friends and family, and this was a project \
-                     with the sole intention of having fun.";
+                     remade in Rust and compiled to WebAssembly. The suspects are satirised celebrities and \
+                     fictional rogues, and this was a project with the sole intention of having fun.";
 pub(crate) const ABOUT_ES: &str = "Esta es una recreación del clásico de los 90 ¿Dónde en el mundo está Carmen Sandiego?, de Brøderbund \
-                        Software, rehecho en Rust y compilado a WebAssembly. Los sospechosos son amigos y familia, y este \
-                        proyecto se hizo con el único fin de divertirse.";
+                        Software, rehecho en Rust y compilado a WebAssembly. Los sospechosos son celebridades satirizadas y \
+                        pícaros de ficción, y este proyecto se hizo con el único fin de divertirse.";
 /// (label in English, in Spanish, as shown, address).
 pub(crate) const LINKS: [(&str, &str, &str, &str); 2] = [
     ("Code", "Código", "jonorl/carmen-sandiego", "https://github.com/jonorl/carmen-sandiego"),

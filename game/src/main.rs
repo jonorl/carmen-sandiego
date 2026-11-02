@@ -1,4 +1,4 @@
-//! WHERE IN THE WORLD?  A family-and-friends remake of the classic 1990s
+//! WHERE IN THE WORLD?  A fan remake of the classic 1990s
 //! detective chase.
 //!
 //!     cargo run                      play

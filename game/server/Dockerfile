@@ -8,6 +8,8 @@ COPY . .
 RUN cargo build --release --locked -p carmen-server
 
 FROM debian:bookworm-slim
+# ghcr lists the image under this repository, not the one it was first pushed from.
+LABEL org.opencontainers.image.source=https://github.com/jonorl/carmen-sandiego
 COPY --from=build /src/target/release/carmen-server /usr/local/bin/carmen-server
 # Nothing it does needs root.
 RUN useradd --system --no-create-home --shell /usr/sbin/nologin carmen

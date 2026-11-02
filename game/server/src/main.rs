@@ -1,6 +1,6 @@
 //! The agency's records: each detective's arrests, so their rank follows
-//! them from device to device. There are no accounts, as it's for family and
-//! friends: a detective is just a name.
+//! them from device to device. There are no accounts, as it's a game: a
+//! detective is just a name.
 //!
 //! GET /detectives lists everyone, most arrests first (the roster),
 //! GET /detectives/{name} gives one detective's arrests (0 if they're new), and
@@ -79,7 +79,7 @@ async fn health(State(pool): State<PgPool>) -> Answer<&'static str> {
     Ok("ok")
 }
 
-/// More than the family will ever be, so a runaway table can't swamp the game.
+/// Room for a crowd, so a runaway table can't swamp the game.
 const ROSTER_LIMIT: i64 = 500;
 
 async fn roster(State(pool): State<PgPool>) -> Answer<Json<Vec<Detective>>> {

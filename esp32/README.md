@@ -144,7 +144,7 @@ cd tools/emulator && cargo run --release
 
 ## Copied from Carmen
 
-Copied from the game at commit `4e0a45c`, then freed of macroquad:
+Copied from the game in `../game`, then freed of macroquad:
 
 - `src/art/pixels.rs`, `scene.rs`, `landmarks.rs`: the postcards
   (`scene::paint` gives a `Canvas`).
@@ -180,7 +180,7 @@ Copied from the game at commit `4e0a45c`, then freed of macroquad:
   down to the characters the game shows, with their SIL OFL licences.
 
 Changes to these in the game don't arrive here by themselves: carry them over
-by hand, and note the new commit here. Their `#[cfg(test)]` tests run on the
+by hand in the same change, and note here anything changed in the copy. Their `#[cfg(test)]` tests run on the
 computer through the emulator (see Testing), which links `countries.json` and
 `suspects.json` into its folder so they find them.
 
