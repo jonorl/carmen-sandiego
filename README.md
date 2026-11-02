@@ -1,5 +1,7 @@
 # Where in the World?
 
+[![CI](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml)
 [![Deploy web](https://github.com/jonorl/carmen-sandiego/actions/workflows/deploy-web.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/deploy-web.yml)
 [![Rust 2024](https://img.shields.io/badge/rust-2024_edition-orange?logo=rust)](https://doc.rust-lang.org/edition-guide/rust-2024/)
 [![ESP32-S3](https://img.shields.io/badge/runs_on-ESP32--S3-red)](https://www.espressif.com/en/products/socs/esp32-s3)
