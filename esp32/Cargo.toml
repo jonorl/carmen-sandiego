@@ -1,0 +1,45 @@
+[package]
+name = "carmen-esp32"
+version = "0.1.0"
+edition = "2024"
+default-run = "carmen-esp32"
+description = "Where in the World? on an ESP32-S3 with an ILI9341 touch screen and a piezo."
+
+[lib]
+harness = false
+
+[[bin]]
+name = "carmen-esp32"
+harness = false # no test harness on the device; keeps rust-analyzer quiet
+
+[dependencies]
+esp-idf-svc = "0.53"
+log = "0.4"
+anyhow = "1"
+# The data files keep their order: clues come grouped by type as written.
+serde_json = { version = "1", features = ["preserve_order"] }
+mipidsi = "0.10"
+embedded-graphics-core = "0.4"
+# HTTP requests to the bureau's server.
+embedded-svc = { version = "0.29", default-features = false, features = ["std"] }
+# WiFi settings from cfg.toml (kept out of git), built in.
+toml-cfg = "0.2"
+
+[build-dependencies]
+embuild = "0.33"
+# Turns the fonts into bitmaps at build time, so nothing is rendered on the device.
+fontdue = "0.9"
+# Turns the sprite strips into raw pixels at build time.
+png = "0.18"
+# Reads the map's coastlines at build time, which on the device would cost a lot of small allocations.
+serde_json = "1"
+
+# The art is painted on the device, so it needs speed more than size; 16 MB of flash leaves room.
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.dev]
+debug = true # symbols stay on the computer, not in flash
+opt-level = "s"

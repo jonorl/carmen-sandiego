@@ -1,0 +1,28 @@
+# Grouped so a week's updates arrive as one pull request per ecosystem.
+version: 2
+updates:
+  # The firmware.
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      cargo:
+        patterns: ["*"]
+
+  # The emulator, which also runs the tests.
+  - package-ecosystem: cargo
+    directory: /tools/emulator
+    schedule:
+      interval: weekly
+    groups:
+      emulator:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

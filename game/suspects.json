@@ -1,0 +1,334 @@
+{
+  "_how_to_edit": [
+    "Every suspect needs a name, a sex (male or female) and a value for every trait.",
+    "No two people may have the same sex AND the same crime computer traits, or the computer can't tell them apart.",
+    "Values work best as short words that several people share.",
+    "Each trait's clues are witness sentences; {value} becomes that person's value.",
+    "In sentences, {They}/{they}, {Them}/{them} and {Their}/{their} become he/him/his or she/her/her.",
+    "phrases (optional) say how witnesses word a value when it doesn't read well on its own.",
+    "computer: false marks a trait the crime computer doesn't have. Other is one.",
+    "catchphrase (optional) is what they say when you catch them. bio (optional) shows as Notes in their dossier.",
+    "skin is optional: light, rosy, olive, tan, brown or dark.",
+    "es holds the Spanish (Argentina). On a trait: its label, witness sentences, values and phrases.",
+    "After editing, run: cargo run -- --check"
+  ],
+  "traits": [
+    {
+      "key": "hobby",
+      "label": "Hobby",
+      "phrases": {
+        "magnets": "playing with magnets"
+      },
+      "clues": [
+        "{They} wouldn't stop talking about {value}.",
+        "{They} asked if there was anywhere nearby for {value}.",
+        "{They} said {they} never missed a weekend of {value}."
+      ],
+      "es": {
+        "label": "Pasatiempo",
+        "values": {
+          "gadgets": "gadgets",
+          "yoga": "yoga",
+          "magnets": "imanes",
+          "watching terrible films": "películas malísimas",
+          "video games": "videojuegos"
+        },
+        "phrases": {
+          "gadgets": "probar gadgets nuevos",
+          "yoga": "hacer yoga",
+          "magnets": "jugar con imanes",
+          "watching terrible films": "ver películas malísimas",
+          "video games": "jugar a los videojuegos"
+        },
+        "clues": [
+          "Me dijo que lo que más le gusta es {value}.",
+          "Preguntó si había algún lugar cerca para {value}.",
+          "Dijo que no hay fin de semana sin {value}."
+        ]
+      }
+    },
+    {
+      "key": "hair",
+      "label": "Hair",
+      "phrases": {
+        "bald": "no hair at all",
+        "black": "black hair",
+        "brown": "brown hair",
+        "blonde": "blonde hair"
+      },
+      "clues": [
+        "{They} had {value}.",
+        "You couldn't miss {them}: {they} had {value}."
+      ],
+      "es": {
+        "label": "Pelo",
+        "values": {
+          "bald": "pelado",
+          "black": "negro",
+          "brown": "castaño",
+          "blonde": "rubio"
+        },
+        "phrases": {
+          "bald": "la cabeza pelada",
+          "black": "el pelo negro",
+          "brown": "el pelo castaño",
+          "blonde": "el pelo rubio"
+        },
+        "clues": [
+          "Tenía {value}.",
+          "Imposible no ver{lo}: tenía {value}."
+        ]
+      }
+    },
+    {
+      "key": "feature",
+      "label": "Feature",
+      "clues": [
+        "I couldn't help noticing {their} {value}.",
+        "One thing I remember about {them}: {their} {value}."
+      ],
+      "es": {
+        "label": "Rasgo",
+        "values": {
+          "glasses": "anteojos",
+          "green eyes": "ojos verdes",
+          "short stature": "baja estatura",
+          "beard": "barba"
+        },
+        "phrases": {
+          "glasses": "sus anteojos",
+          "green eyes": "sus ojos verdes",
+          "short stature": "su baja estatura",
+          "beard": "su barba"
+        },
+        "clues": [
+          "No pude dejar de notar {value}.",
+          "Algo que me acuerdo bien: {value}."
+        ]
+      }
+    },
+    {
+      "key": "vehicle",
+      "label": "Vehicle",
+      "phrases": {
+        "rollerskates": "roller skate"
+      },
+      "clues": [
+        "{They} said nothing beats getting around by {value}.",
+        "How did {they} get here? By {value}, {they} said."
+      ],
+      "es": {
+        "label": "Vehículo",
+        "values": {
+          "bicycle": "bicicleta",
+          "rollerskates": "patines",
+          "scooter": "monopatín",
+          "public transport": "transporte público",
+          "car": "auto"
+        },
+        "clues": [
+          "Dijo que no hay nada como moverse en {value}.",
+          "¿Cómo llegó? En {value}, me dijo."
+        ]
+      }
+    },
+    {
+      "key": "other",
+      "label": "Other",
+      "computer": false,
+      "clues": [
+        "Funny thing about {them}: {they} {value}.",
+        "I'll tell you one more thing: {they} {value}."
+      ],
+      "es": {
+        "label": "Otros",
+        "clues": [
+          "Algo curioso: {value}.",
+          "Te digo una cosa más: {value}."
+        ]
+      }
+    }
+  ],
+  "suspects": [
+    {
+      "name": "Jon Orlo",
+      "sex": "male",
+      "hobby": "gadgets",
+      "hair": "bald",
+      "feature": "glasses",
+      "vehicle": "bicycle",
+      "other": "pretends to know some Japanese",
+      "catchphrase": "Omae wa mo, shindeiru!",
+      "bio": "A mysterious international criminal whose technical abilities are matched only by his questionable knowledge of Japanese. Wanted for an assortment of suspicious technological activities.",
+      "es": {
+        "other": "se hace el que sabe algo de japonés",
+        "bio": "Un misterioso delincuente internacional cuyas habilidades tecnológicas solo son comparables con sus dudosos conocimientos de japonés. Se lo busca por una serie de actividades tecnológicas bastante sospechosas."
+      }
+    },
+    {
+      "name": "Carmen Sandiego",
+      "sex": "female",
+      "hobby": "yoga",
+      "hair": "black",
+      "feature": "glasses",
+      "vehicle": "car",
+      "other": "has never been photographed without a red hat",
+      "catchphrase": "You'll never catch me!",
+      "bio": "The original international super-thief. A master of disguise, geography and disappearing just when the authorities think they've caught up with her. Her whereabouts remain unknown.",
+      "es": {
+        "other": "nunca fue fotografiada sin su sombrero rojo",
+        "bio": "La ladrona internacional más famosa del mundo. Maestra del disfraz, la geografía y el arte de desaparecer justo cuando las autoridades creen que están a punto de atraparla. Su paradero sigue siendo un misterio."
+      }
+    },
+    {
+      "name": "Mirtha LeGrandTheftAuto",
+      "sex": "female",
+      "hobby": "magnets",
+      "hair": "blonde",
+      "feature": "short stature",
+      "vehicle": "rollerskates",
+      "other": "invites her victims to lunch before stealing their valuables",
+      "catchphrase": "¡Carajo, qué pregunta!",
+      "bio": "A legendary television personality turned international art thief. Known for her impeccable table manners, extraordinary longevity and an uncanny ability to make priceless antiques disappear between courses. Her victims are often invited to lunch the following day.",
+      "es": {
+        "other": "invita a sus víctimas a almorzar antes de robarles sus pertenencias",
+        "bio": "Una legendaria figura de la televisión convertida en ladrona internacional de obras de arte. Conocida por sus impecables modales en la mesa, su extraordinaria longevidad y su increíble habilidad para hacer desaparecer antigüedades de valor incalculable entre plato y plato. Sus víctimas suelen recibir una invitación a almorzar al día siguiente."
+      }
+    },
+    {
+      "name": "Richard Fortune",
+      "sex": "male",
+      "hobby": "watching terrible films",
+      "hair": "bald",
+      "feature": "beard",
+      "vehicle": "public transport",
+      "other": "insists he is worth more than the entire national treasury",
+      "catchphrase": "¡Basta, chicos!",
+      "bio": "A fabulously wealthy criminal with an obsession for luxury cars, expensive jewellery and extravagant parties. Frequently steals things he could easily afford to buy. Believes money can solve absolutely everything.",
+      "es": {
+        "other": "insiste en que vale más que todo el tesoro nacional",
+        "bio": "Un delincuente fabulosamente rico, obsesionado con los autos de lujo, las joyas caras y las fiestas extravagantes. Suele robar cosas que tranquilamente podría comprarse. Está convencido de que con plata se soluciona absolutamente todo."
+      }
+    },
+    {
+      "name": "Javier Chainsawman",
+      "sex": "male",
+      "hobby": "gadgets",
+      "hair": "brown",
+      "feature": "short stature",
+      "vehicle": "car",
+      "other": "occasionally threatens to dismantle the entire economy",
+      "catchphrase": "¡Viva la libertad, carajo!",
+      "bio": "A self-proclaimed economic genius and professional chainsaw enthusiast. Wanted for the systematic dismantling of national economies, public institutions and occasionally household furniture. Travels with an unusually large collection of power tools.",
+      "es": {
+        "other": "a veces amenaza con desmantelar toda la economía",
+        "bio": "Un autoproclamado genio de la economía y entusiasta profesional de las motosierras. Se lo busca por desmantelar sistemáticamente economías nacionales, instituciones públicas y, de vez en cuando, algún que otro mueble. Viaja con una colección sospechosamente grande de herramientas eléctricas."
+      }
+    },
+    {
+      "name": "Guille Francachella",
+      "sex": "male",
+      "hobby": "yoga",
+      "hair": "black",
+      "feature": "beard",
+      "vehicle": "scooter",
+      "other": "laughs suspiciously whenever someone mentions money",
+      "catchphrase": "¡Hermosa mañana, verdad!",
+      "bio": "A charismatic master of impersonation who has infiltrated countless organisations. His greatest weakness is an uncontrollable laugh that tends to reveal his identity at the worst possible moment.",
+      "es": {
+        "other": "se ríe sospechosamente cada vez que alguien menciona plata",
+        "bio": "Un carismático maestro de la imitación que logró infiltrarse en todo tipo de organizaciones. Su mayor debilidad es una risa incontrolable que suele delatarlo en el peor momento posible."
+      }
+    },
+    {
+      "name": "Cashteena Kitchen",
+      "sex": "female",
+      "hobby": "video games",
+      "hair": "black",
+      "feature": "glasses",
+      "vehicle": "public transport",
+      "other": "has an unusually large collection of expensive handbags",
+      "catchphrase": "¡Que alguien me explique esto!",
+      "bio": "A highly resourceful political operator with an impressive talent for making inconvenient evidence disappear. Allegedly maintains a secret underground collection of luxury handbags and suspiciously well-organised financial records.",
+      "es": {
+        "other": "tiene una colección sospechosamente grande de carteras de lujo",
+        "bio": "Una hábil operadora política con un talento extraordinario para hacer desaparecer pruebas inconvenientes. Se sospecha que mantiene una colección secreta de carteras de lujo y registros financieros sospechosamente bien organizados."
+      }
+    },
+    {
+      "name": "Lupin III",
+      "sex": "male",
+      "hobby": "magnets",
+      "hair": "black",
+      "feature": "green eyes",
+      "vehicle": "car",
+      "other": "always leaves a calling card at the scene of the crime",
+      "catchphrase": "The world's most wanted thief strikes again!",
+      "bio": "The legendary gentleman thief and grandson of Arsène Lupin. A master of disguises, elaborate heists and impossible escapes. Often announces his next robbery well in advance, just to make things interesting.",
+      "es": {
+        "other": "siempre deja una tarjeta de presentación en la escena del crimen",
+        "bio": "El legendario ladrón de guante blanco y nieto de Arsène Lupin. Maestro del disfraz, los robos imposibles y las fugas espectaculares. Suele anunciar sus próximos golpes con bastante anticipación, simplemente para darle emoción al asunto."
+      }
+    },
+    {
+      "name": "Guybrush Threepwood",
+      "sex": "male",
+      "hobby": "video games",
+      "hair": "brown",
+      "feature": "green eyes",
+      "vehicle": "bicycle",
+      "other": "claims to be a mighty pirate despite being afraid of almost everything",
+      "catchphrase": "I'm Guybrush Threepwood, mighty pirate!",
+      "bio": "A self-proclaimed mighty pirate with a remarkable talent for getting into trouble. Known for elaborate insults, questionable sword-fighting skills and an inexplicable ability to survive almost anything.",
+      "es": {
+        "other": "afirma ser un temible pirata aunque le tiene miedo a casi todo",
+        "bio": "Un autoproclamado pirata temible con un talento extraordinario para meterse en problemas. Conocido por sus insultos elaborados, sus dudosas habilidades con la espada y su inexplicable capacidad para sobrevivir absolutamente a todo."
+      }
+    },
+    {
+      "name": "Ada LoveLarceny",
+      "sex": "female",
+      "hobby": "gadgets",
+      "hair": "brown",
+      "feature": "green eyes",
+      "vehicle": "scooter",
+      "other": "writes elaborate algorithms to plan her robberies",
+      "catchphrase": "The Analytical Engine has calculated your defeat!",
+      "bio": "A pioneering mathematical mastermind who developed the first known computer programs. Now uses her extraordinary analytical abilities to plan impossibly elaborate heists. Authorities suspect her crimes are several centuries ahead of their time.",
+      "es": {
+        "other": "escribe algoritmos elaborados para planificar sus robos",
+        "bio": "Una mente matemática brillante que desarrolló algunos de los primeros programas informáticos de la historia. Hoy utiliza sus extraordinarias habilidades analíticas para planificar robos imposiblemente elaborados. Las autoridades sospechan que sus delitos están varios siglos adelantados a su época."
+      }
+    },
+    {
+      "name": "Florence Night-robber",
+      "sex": "female",
+      "hobby": "watching terrible films",
+      "hair": "black",
+      "feature": "short stature",
+      "vehicle": "bicycle",
+      "other": "only operates at night and carries an unusually large medical bag",
+      "catchphrase": "I shall leave no stone unturned... or safe unopened.",
+      "bio": "A nocturnal criminal who uses her reputation for nursing to gain access to heavily guarded buildings. Specialises in late-night burglaries and disappearing before the morning shift. Always insists on maintaining impeccable hygiene.",
+      "es": {
+        "other": "solo opera de noche y lleva un maletín médico sospechosamente grande",
+        "bio": "Una delincuente nocturna que aprovecha su reputación como enfermera para acceder a edificios fuertemente custodiados. Se especializa en robos durante la madrugada y desaparece antes de que llegue el turno de la mañana. Insiste siempre en mantener una higiene impecable."
+      }
+    },
+    {
+      "name": "Samus Arson",
+      "sex": "female",
+      "hobby": "yoga",
+      "hair": "blonde",
+      "feature": "green eyes",
+      "vehicle": "rollerskates",
+      "other": "wears an extremely expensive suit of powered armour",
+      "catchphrase": "Mission complete.",
+      "bio": "An intergalactic bounty hunter turned wanted criminal. Equipped with an advanced power suit, an impressive arsenal and absolutely no regard for property damage. Authorities advise against attempting to arrest her without adequate planetary insurance.",
+      "es": {
+        "other": "usa una armadura robótica extremadamente costosa",
+        "bio": "Una cazarrecompensas intergaláctica convertida en delincuente buscada. Equipada con una armadura de combate de última generación, un arsenal impresionante y un desprecio absoluto por la propiedad ajena. Las autoridades recomiendan no intentar detenerla sin antes contratar un seguro planetario."
+      }
+    }
+  ]
+}

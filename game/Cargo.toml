@@ -1,0 +1,24 @@
+[package]
+name = "carmen"
+version = "0.1.0"
+edition = "2024"
+description = "Where in the World? A family-and-friends detective chase."
+
+[workspace]
+members = ["shared", "server"]
+
+[dependencies]
+carmen-shared = { path = "shared" }
+macroquad = { version = "0.4.16", features = ["audio"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+ureq = "3"
+
+# Small over fast: the whole game is downloaded on the web, and it's light
+# enough to run well either way.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true

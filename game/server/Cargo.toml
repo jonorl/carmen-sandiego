@@ -1,0 +1,16 @@
+[package]
+name = "carmen-server"
+version = "0.1.0"
+edition = "2024"
+description = "The agency's records: each detective's arrests."
+
+[dependencies]
+axum = "0.8"
+carmen-shared = { path = "../shared" }
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "postgres", "migrate", "macros"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
+tower-http = { version = "0.7", features = ["cors"] }
+
+[dev-dependencies]
+serde_json = "1"
+tower = { version = "0.5", features = ["util"] }

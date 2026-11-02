@@ -1,0 +1,41 @@
+name: Bug report
+description: Something on the device doesn't work as it should.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: And what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen
+      placeholder: |
+        1. Sign in as a new detective
+        2. Fly to ...
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Serial monitor output
+      description: What `cargo run --release` (or `espflash monitor`) printed around the problem, if you have it.
+      render: text
+  - type: input
+    id: hardware
+    attributes:
+      label: Board, screen and power supply
+      description: "Resets and crashes are often power: say what feeds the board and the screen."
+      placeholder: 'ESP32-S3 DevKitC-1 N16R8, ILI9341 2.8", 5.1 V USB'
+  - type: input
+    id: version
+    attributes:
+      label: Commit or release
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options: [English, Spanish]

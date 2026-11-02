@@ -1,0 +1,20 @@
+[package]
+name = "emulator"
+version = "0.1.0"
+edition = "2024"
+description = "Runs the game on the computer and records a scripted case as docs/demo.gif."
+publish = false
+
+[dependencies]
+serde_json = { version = "1", features = ["preserve_order"] }
+log = "0.4"
+
+[build-dependencies]
+# Only for the device's build.rs to compile: the emulator never links ESP-IDF.
+embuild = { version = "0.33", features = ["espidf"] }
+fontdue = "0.9"
+png = "0.18"
+serde_json = "1"
+
+# Its own workspace, built for the computer, not the device.
+[workspace]

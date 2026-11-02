@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/jonorl/carmen-esp32/security/advisories/new
+    about: Privately, please; see SECURITY.md.
+  - name: A clue, country or rule of the game
+    url: https://github.com/jonorl/carmen/issues/new/choose
+    about: The game's content lives in Carmen; this repository copies it from there.

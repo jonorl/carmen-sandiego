@@ -1,0 +1,23 @@
+name: Clue correction
+description: A clue or country fact that's wrong, out of date or ambiguous.
+labels: [bug]
+body:
+  - type: input
+    id: country
+    attributes:
+      label: Country
+    validations:
+      required: true
+  - type: textarea
+    id: clue
+    attributes:
+      label: The clue as the game shows it
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong with it
+      description: A source helps, and so does saying which other country it could also describe.
+    validations:
+      required: true

@@ -1,0 +1,42 @@
+name: Bug report
+description: Something in the game or the records server doesn't work as it should.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: And what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen
+      description: On desktops, `--seed N --rank R` replays a case exactly; include them if you can.
+      placeholder: |
+        1. Start a case as a Rookie
+        2. Fly to ...
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options:
+        - Browser on a computer
+        - Browser on a phone or tablet
+        - Desktop (Linux)
+        - Desktop (Windows)
+        - Desktop (macOS)
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser or OS version
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options: [English, Spanish]

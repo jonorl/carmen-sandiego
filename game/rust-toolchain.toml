@@ -1,0 +1,6 @@
+# Pinned so a new Rust release (and its new lints) can't break CI on its own;
+# Dependabot proposes each update as a pull request instead.
+[toolchain]
+channel = "1.99.1"
+components = ["rustfmt", "clippy"]
+targets = ["wasm32-unknown-unknown"]

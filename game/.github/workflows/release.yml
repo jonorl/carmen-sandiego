@@ -1,0 +1,97 @@
+name: Release
+
+# Push a tag like v0.2.0 (matching Cargo.toml's version) to build the desktop
+# game for Linux, Windows and macOS and attach it to a GitHub release. The
+# binary embeds its data, fonts and sounds, so each download is one file.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset: carmen-linux-x86_64.tar.gz
+          - os: windows-latest
+            asset: carmen-windows-x86_64.zip
+          - os: macos-latest
+            asset: carmen-macos-universal.tar.gz
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check the tag matches Cargo.toml
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME but Cargo.toml says $version"; exit 1; }
+
+      # rustup is on GitHub's runners; with no arguments it installs what rust-toolchain.toml names.
+      - name: Set up Rust
+        run: rustup toolchain install
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install system libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libx11-dev libxi-dev libgl1-mesa-dev libasound2-dev
+
+      - name: Build (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          cargo build --release --locked
+          tar -czf ${{ matrix.asset }} -C target/release carmen -C "$GITHUB_WORKSPACE" README.md LICENSE
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cargo build --release --locked
+          cp target/release/carmen.exe .
+          7z a ${{ matrix.asset }} carmen.exe README.md LICENSE
+
+      # One binary for both Apple silicon and Intel Macs.
+      - name: Build (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          rustup target add aarch64-apple-darwin x86_64-apple-darwin
+          cargo build --release --locked --target aarch64-apple-darwin
+          cargo build --release --locked --target x86_64-apple-darwin
+          lipo -create -output carmen target/aarch64-apple-darwin/release/carmen target/x86_64-apple-darwin/release/carmen
+          tar -czf ${{ matrix.asset }} carmen README.md LICENSE
+
+      - name: Upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.asset }}
+          path: ${{ matrix.asset }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download
+        uses: actions/download-artifact@v8
+        with:
+          path: assets
+          merge-multiple: true
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd assets
+          sha256sum carmen-* > SHA256SUMS
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes carmen-* SHA256SUMS

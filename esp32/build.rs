@@ -1,0 +1,298 @@
+//! Links ESP-IDF, and turns the fonts in `assets/fonts` into bitmaps
+//! (`$OUT_DIR/fonts.rs`, included by `src/text.rs`), so the device only
+//! copies pixels.
+//!
+//! Pixelify Sans and VT323 are pixel fonts: their outlines are drawn on a
+//! grid of square cells, one per design pixel. Rasterising them at an
+//! ordinary size smears every cell over two screen pixels, since the grid
+//! doesn't start at zero, so each glyph is rasterised large instead and every
+//! cell lit if enough of it is covered. That gives the font's own pixels, one
+//! screen pixel each (or a square of them at a larger scale). Noto Sans,
+//! there only for ₹, is rasterised the ordinary way.
+//!
+//! It also turns the sprite strips in `assets/sprites` into raw RGBA
+//! (`$OUT_DIR/<name>.rgba`), with their sizes in `$OUT_DIR/sprites.rs`, and
+//! the map's coastlines into rings of points (`$OUT_DIR/land.bin`, read by
+//! `src/art/map.rs`).
+
+use std::collections::HashMap;
+use std::fmt::Write;
+
+struct PixelFont {
+    name: &'static str,
+    file: &'static str,
+    /// The grid, in font units: a cell's size, and where cell (0, 0) starts.
+    cell: f32,
+    x0: f32,
+    y0: f32,
+    /// How much of a cell must be covered to light it. Pixelify's strokes
+    /// spill about 10 units into the next cell and its accents sit half a
+    /// cell off the grid, so a half keeps both to one pixel; VT323 draws
+    /// scanlines inside its cells, so needs less.
+    lit: f32,
+    /// Whether some marks are drawn finer than the grid, as Pixelify's
+    /// accents are; see `cells_lit`.
+    fine_marks: bool,
+    /// Sizes in pixels (one em). At the font's own size each design pixel is
+    /// one screen pixel; at other sizes design pixels are scaled to whole
+    /// screen pixels, some a pixel bigger than others.
+    sizes: &'static [u32],
+    /// Sizes to also rasterise the ordinary way, smoothed, as `<name>_SMOOTH`.
+    smooth: &'static [u32],
+}
+
+/// Measured from the outlines (with fontTools): Pixelify's 'I' runs from 60
+/// to 343 across and from -12 to 631 up, three cells by seven of 91 units;
+/// VT323's cells are 40 units from zero.
+const PIXEL_FONTS: [PixelFont; 2] = [
+    PixelFont {
+        name: "PIXELIFY",
+        file: "PixelifySans.ttf",
+        cell: 91.0,
+        x0: 60.0,
+        y0: -12.0,
+        lit: 0.5,
+        fine_marks: true,
+        // 11 for labels and 22 for headings, as its own pixels; body text
+        // is 13 smoothed, chosen on the screen over 11 and 14.
+        sizes: &[11, 22],
+        smooth: &[13],
+    },
+    PixelFont { name: "VT323", file: "VT323.ttf", cell: 40.0, x0: 0.0, y0: 0.0, lit: 0.3, fine_marks: false, sizes: &[25], smooth: &[] },
+];
+
+/// Big-raster pixels along a cell's side when sampling coverage.
+const SAMPLES: f32 = 12.0;
+/// How much of a cell a fine mark must cover to light it (see `cells_lit`).
+const MARK_LIT: f32 = 0.2;
+
+fn main() {
+    embuild::espidf::sysenv::output();
+    assets();
+}
+
+/// The fonts, sprites, photos and coastlines: everything but ESP-IDF, which
+/// is also what `tools/emulator` builds the game on the computer with.
+pub fn assets() {
+    println!("cargo:rerun-if-changed=assets/fonts");
+    println!("cargo:rerun-if-changed=assets/sprites");
+    println!("cargo:rerun-if-changed=assets/suspects");
+    println!("cargo:rerun-if-changed=cfg.toml");
+    sprites();
+    land();
+    println!("cargo:rerun-if-changed=build.rs");
+
+    let mut out = String::new();
+    let mut sizes = Vec::new();
+    for pf in &PIXEL_FONTS {
+        let font = load(pf.file);
+        let units = font.units_per_em();
+        let big = SAMPLES * units / pf.cell; // px per em when rasterised large
+        let cells = |u: f32| u / pf.cell;
+        let line = font.horizontal_line_metrics(units).expect("horizontal metrics");
+        let (ascent, descent) = (cells(line.ascent - pf.y0).round() as i32, cells(-line.descent + pf.y0).round() as i32);
+        let own = cells(units).round(); // the font's own size, in pixels
+        let mut sets = Vec::new();
+        for &size in pf.sizes {
+            let k = size as f32 / own; // screen pixels per design pixel
+            // Where a design pixel's edge falls on the screen, so neighbouring cells meet exactly.
+            let edge = |n: i32| (n as f32 * k).floor() as i32;
+            let (mut glyphs, mut alpha) = (String::new(), Vec::new());
+            for c in chars(&font) {
+                let (m, raster) = font.rasterize(c, big);
+                let ink: Vec<(f32, f32, f32)> = (0..m.height)
+                    .flat_map(|row| (0..m.width).map(move |col| (row, col)))
+                    .filter_map(|(row, col)| {
+                        let a = raster[row * m.width + col] as f32 / 255.0;
+                        let ux = (m.xmin as f32 + col as f32 + 0.5) * units / big;
+                        let uy = (m.ymin as f32 + (m.height - 1 - row) as f32 + 0.5) * units / big;
+                        (a > 0.0).then_some((ux, uy, a))
+                    })
+                    .collect();
+                let lit = cells_lit(pf, &ink);
+                let advance = edge(cells(font.metrics(c, units).advance_width).round() as i32) as f32;
+                let at = alpha.len();
+                let (x, y, w, h) = if lit.is_empty() {
+                    (0, 0, 0, 0)
+                } else {
+                    let (i0, i1) = (lit.iter().map(|k| k.0).min().unwrap(), lit.iter().map(|k| k.0).max().unwrap());
+                    let (j0, j1) = (lit.iter().map(|k| k.1).min().unwrap(), lit.iter().map(|k| k.1).max().unwrap());
+                    let (left, bottom, top) = (edge(i0), edge(j0), edge(j1 + 1));
+                    let (w, h) = (edge(i1 + 1) - left, top - bottom);
+                    let mut bitmap = vec![0u8; (w * h) as usize];
+                    for &(i, j) in &lit {
+                        for sy in edge(j)..edge(j + 1) {
+                            for sx in edge(i)..edge(i + 1) {
+                                bitmap[((top - 1 - sy) * w + sx - left) as usize] = 255;
+                            }
+                        }
+                    }
+                    alpha.extend(bitmap);
+                    (left, bottom, w, h)
+                };
+                writeln!(glyphs, "        Glyph {{ c: {c:?}, advance: {advance:?}, x: {x}, y: {y}, w: {w}, h: {h}, at: {at} }},").unwrap();
+            }
+            sizes.push(size);
+            sets.push(font_data(&mut out, &format!("{}_{size}", pf.name), size, edge(ascent), edge(ascent + descent), &glyphs, &alpha));
+        }
+        writeln!(out, "pub static {}: &[&FontData] = &[{}];", pf.name, sets.join(", ")).unwrap();
+        let smooth: Vec<String> = pf.smooth.iter().map(|&size| smooth_set(&mut out, &font, &format!("{}_SMOOTH", pf.name), size)).collect();
+        writeln!(out, "pub static {}_SMOOTH: &[&FontData] = &[{}];", pf.name, smooth.join(", ")).unwrap();
+        sizes.extend(pf.smooth);
+    }
+
+    // Noto Sans for ₹, smoothed, at every size the pixel fonts come in.
+    let noto = load("NotoSans-Regular.ttf");
+    sizes.sort();
+    sizes.dedup();
+    let sets: Vec<String> = sizes.iter().map(|&size| smooth_set(&mut out, &noto, "NOTO", size)).collect();
+    writeln!(out, "pub static NOTO: &[&FontData] = &[{}];", sets.join(", ")).unwrap();
+
+    let path = std::path::Path::new(&std::env::var("OUT_DIR").unwrap()).join("fonts.rs");
+    std::fs::write(path, out).unwrap();
+}
+
+/// The cells covered at least `lit`, from the big raster's ink (font-unit
+/// position and coverage of each of its pixels). With `fine_marks`, ink left
+/// outside those cells lights the cells it covers at least `MARK_LIT`:
+/// Pixelify draws its acute and grave accents in half-cell steps, so no cell
+/// is half covered by one, and they'd vanish.
+fn cells_lit(pf: &PixelFont, ink: &[(f32, f32, f32)]) -> Vec<(i32, i32)> {
+    let cell_of = |ux: f32, uy: f32| (((ux - pf.x0) / pf.cell).floor() as i32, ((uy - pf.y0) / pf.cell).floor() as i32);
+    let area = SAMPLES * SAMPLES;
+    let mut cover: HashMap<(i32, i32), f32> = HashMap::new();
+    for &(ux, uy, a) in ink {
+        *cover.entry(cell_of(ux, uy)).or_default() += a;
+    }
+    let mut lit: Vec<(i32, i32)> = cover.iter().filter(|&(_, &sum)| sum >= pf.lit * area).map(|(&k, _)| k).collect();
+    if pf.fine_marks {
+        // Only ink away from the lit cells: a stroke's spill into its
+        // neighbours (about 10 units) mustn't count.
+        let near = |(i, j): (i32, i32)| lit.iter().any(|&(li, lj)| (li - i).abs() <= 1 && (lj - j).abs() <= 1);
+        let marks: Vec<(i32, i32)> = cover.iter().filter(|&(&k, &sum)| sum >= MARK_LIT * area && !near(k)).map(|(&k, _)| k).collect();
+        lit.extend(marks);
+    }
+    lit
+}
+
+fn load(file: &str) -> fontdue::Font {
+    let bytes = std::fs::read(format!("assets/fonts/{file}")).expect("a font in assets/fonts");
+    fontdue::Font::from_bytes(bytes, fontdue::FontSettings::default()).expect("a readable font")
+}
+
+/// The font's printable characters, sorted so the device can search them.
+fn chars(font: &fontdue::Font) -> Vec<char> {
+    let mut chars: Vec<char> = font.chars().keys().copied().filter(|c| !c.is_control()).collect();
+    chars.sort();
+    chars
+}
+
+/// `font` rasterised the ordinary way at `size`, smoothed, as `<name>_<size>`.
+fn smooth_set(out: &mut String, font: &fontdue::Font, name: &str, size: u32) -> String {
+    let px = size as f32;
+    let line = font.horizontal_line_metrics(px).expect("horizontal metrics");
+    let (mut glyphs, mut alpha) = (String::new(), Vec::new());
+    for c in chars(font) {
+        let (m, raster) = font.rasterize(c, px);
+        writeln!(
+            glyphs,
+            "        Glyph {{ c: {c:?}, advance: {:?}, x: {}, y: {}, w: {}, h: {}, at: {} }},",
+            m.advance_width.round(),
+            m.xmin,
+            m.ymin,
+            m.width,
+            m.height,
+            alpha.len()
+        )
+        .unwrap();
+        alpha.extend(raster);
+    }
+    font_data(out, &format!("{name}_{size}"), size, line.ascent.round() as i32, line.new_line_size.round() as i32, &glyphs, &alpha)
+}
+
+/// Writes one font at one size; returns a reference to it.
+fn font_data(out: &mut String, set: &str, size: u32, ascent: i32, line: i32, glyphs: &str, alpha: &[u8]) -> String {
+    writeln!(out, "static {set}_ALPHA: [u8; {}] = {alpha:?};", alpha.len()).unwrap();
+    writeln!(
+        out,
+        "static {set}: FontData = FontData {{\n    size: {size},\n    ascent: {ascent},\n    line: {line},\n    glyphs: &[\n{glyphs}    ],\n    alpha: &{set}_ALPHA,\n}};"
+    )
+    .unwrap();
+    format!("&{set}")
+}
+
+/// Each strip as raw RGBA, and a `Strip` naming it, in upper case after its
+/// file (`henchman-stride.png` is `HENCHMAN_STRIDE`); and the suspects'
+/// photos the same way, listed by file name in `PHOTOS`.
+fn sprites() {
+    let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
+    let mut code = String::new();
+    for (stem, w, h) in rgba_files("assets/sprites", &out_dir, "") {
+        let name = stem.to_uppercase().replace('-', "_");
+        writeln!(
+            code,
+            "pub static {name}: Strip = Strip {{ w: {w}, h: {h}, rgba: include_bytes!(concat!(env!(\"OUT_DIR\"), \"/{stem}.rgba\")) }};"
+        )
+        .unwrap();
+    }
+    std::fs::write(out_dir.join("sprites.rs"), code).unwrap();
+    let mut photos = String::from("pub static PHOTOS: &[(&str, Strip)] = &[\n");
+    // Photos are optional (git keeps no empty folder); drawn portraits stand in.
+    let suspects = std::path::Path::new("assets/suspects").is_dir().then(|| rgba_files("assets/suspects", &out_dir, "photo-"));
+    for (stem, w, h) in suspects.unwrap_or_default() {
+        writeln!(
+            photos,
+            "    ({stem:?}, Strip {{ w: {w}, h: {h}, rgba: include_bytes!(concat!(env!(\"OUT_DIR\"), \"/photo-{stem}.rgba\")) }}),"
+        )
+        .unwrap();
+    }
+    photos.push_str("];\n");
+    std::fs::write(out_dir.join("photos.rs"), photos).unwrap();
+}
+
+/// The land outlines from Natural Earth's GeoJSON as `$OUT_DIR/land.bin`:
+/// for each ring, its point count (u16), then each point's longitude and
+/// latitude in hundredths of a degree (i16), all little-endian.
+fn land() {
+    println!("cargo:rerun-if-changed=assets/ne_110m_land.geojson");
+    let text = std::fs::read_to_string("assets/ne_110m_land.geojson").expect("the land outlines");
+    let geo: serde_json::Value = serde_json::from_str(&text).expect("valid GeoJSON");
+    let mut out = Vec::new();
+    for feature in geo["features"].as_array().expect("features") {
+        let geometry = &feature["geometry"];
+        let polygons: Vec<&serde_json::Value> = match geometry["type"].as_str() {
+            Some("Polygon") => vec![&geometry["coordinates"]],
+            Some("MultiPolygon") => geometry["coordinates"].as_array().into_iter().flatten().collect(),
+            _ => continue,
+        };
+        for ring in polygons.into_iter().filter_map(|p| p.as_array()).flatten().filter_map(|r| r.as_array()) {
+            out.extend((ring.len() as u16).to_le_bytes());
+            for point in ring {
+                for k in 0..2 {
+                    let degrees = point[k].as_f64().expect("a coordinate");
+                    out.extend(((degrees * 100.0).round() as i16).to_le_bytes());
+                }
+            }
+        }
+    }
+    let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
+    std::fs::write(out_dir.join("land.bin"), out).unwrap();
+}
+
+/// Every PNG in `dir` written to `out_dir` as `<prefix><stem>.rgba`; their stems and sizes, by name.
+fn rgba_files(dir: &str, out_dir: &std::path::Path, prefix: &str) -> Vec<(String, u32, u32)> {
+    let mut files: Vec<_> = std::fs::read_dir(dir).expect("an assets folder").filter_map(Result::ok).map(|e| e.path()).collect();
+    files.sort();
+    let mut out = Vec::new();
+    for path in files.iter().filter(|p| p.extension().is_some_and(|e| e == "png")) {
+        let stem = path.file_stem().unwrap().to_string_lossy().to_string();
+        let mut decoder = png::Decoder::new(std::io::BufReader::new(std::fs::File::open(path).unwrap()));
+        decoder.set_transformations(png::Transformations::EXPAND | png::Transformations::ALPHA | png::Transformations::STRIP_16);
+        let mut reader = decoder.read_info().expect("a readable PNG");
+        let mut buf = vec![0; reader.output_buffer_size().expect("a PNG size")];
+        let info = reader.next_frame(&mut buf).expect("a PNG frame");
+        std::fs::write(out_dir.join(format!("{prefix}{stem}.rgba")), &buf[..info.buffer_size()]).unwrap();
+        out.push((stem, info.width, info.height));
+    }
+    out
+}

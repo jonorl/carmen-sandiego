@@ -1,0 +1,4 @@
+/target
+/.embuild
+/cfg.toml
+/tools/emulator/target

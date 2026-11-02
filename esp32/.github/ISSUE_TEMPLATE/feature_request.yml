@@ -1,0 +1,15 @@
+name: Idea
+description: A feature, a board or screen to support, or a change to the device.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: What it would add. Changes to the game's rules, clues or countries go to Carmen instead.

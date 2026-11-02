@@ -1,0 +1,64 @@
+name: Release
+
+# Push a tag like v0.2.0 (matching Cargo.toml's version) to build the firmware
+# and attach it to a GitHub release as one image, ready for
+# `espflash write-bin 0x0 carmen-esp32.bin`: bootloader, partition table and
+# game together, so flashing it needs no toolchain. It's built without
+# cfg.toml, so it plays offline: for the bureau's server, build your own with
+# your WiFi settings.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check the tag matches Cargo.toml
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME but Cargo.toml says $version"; exit 1; }
+
+      - name: Set up the esp toolchain
+        uses: esp-rs/xtensa-toolchain@v1.7.0
+        with:
+          buildtargets: esp32s3
+          ldproxy: true
+
+      - name: Cache ESP-IDF
+        uses: actions/cache@v6
+        with:
+          path: ~/.espressif
+          key: esp-idf-${{ runner.os }}-${{ hashFiles('.cargo/config.toml', 'sdkconfig.defaults') }}
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Install espflash
+        run: |
+          curl -sSfL -o espflash.zip https://github.com/esp-rs/espflash/releases/latest/download/espflash-x86_64-unknown-linux-gnu.zip
+          mkdir -p "$RUNNER_TEMP/espflash"
+          unzip -q espflash.zip -d "$RUNNER_TEMP/espflash"
+          chmod +x "$RUNNER_TEMP/espflash/espflash"
+          echo "$RUNNER_TEMP/espflash" >> "$GITHUB_PATH"
+
+      # The same flash size and partition table as `cargo run` flashes with (.cargo/config.toml);
+      # unpadded, so flashing it leaves the rest of the flash, and the arrests saved there, alone.
+      - name: Make the image
+        run: |
+          espflash save-image --chip esp32s3 --merge --skip-padding --flash-size 16mb --partition-table partitions.csv \
+            target/xtensa-esp32s3-espidf/release/carmen-esp32 carmen-esp32.bin
+          sha256sum carmen-esp32.bin > SHA256SUMS
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes carmen-esp32.bin SHA256SUMS

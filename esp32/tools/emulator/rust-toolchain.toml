@@ -1,0 +1,3 @@
+# The repository's toolchain is the esp one, for the device.
+[toolchain]
+channel = "stable"

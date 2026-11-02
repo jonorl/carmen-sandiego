@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Where in the World?</title>
+  <meta name="description" content="A remake of the 1990 detective game Where in the World is Carmen Sandiego?, where the thieves are family and friends. Chase them around the world in your browser, in English or Spanish.">
+  <meta property="og:title" content="Where in the World?">
+  <meta property="og:description" content="A family-and-friends remake of Where in the World is Carmen Sandiego?, playable in the browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jonathan-orlowski.dev/carmen/">
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1 class="sr-only">Where in the World?</h1>
+    <p class="sr-only">A fan remake of the 1990 detective game Where in the World is Carmen Sandiego?, with family and friends as the thieves, in English or Spanish. It's drawn on the canvas below and played with the mouse or touch and the keyboard. Source code: <a href="https://github.com/jonorl/carmen">github.com/jonorl/carmen</a>.</p>
+    <canvas id="glcanvas" tabindex="0" role="application" aria-label="Where in the World? game screen"></canvas>
+  </main>
+  <div id="loading"><div aria-hidden="true">WHERE IN THE WORLD?</div><div class="bar" role="progressbar" aria-label="Loading the game" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill"></div></div><div class="status" aria-live="polite">Loading…</div></div>
+  <script src="loader.js"></script>
+  <script src="mq_js_bundle.js"></script>
+  <script src="storage.js"></script>
+  <script src="input.js"></script>
+  <script src="net.js"></script>
+</body>
+</html>
