@@ -1,4 +1,4 @@
-# Where in the World?
+# Where in the World is Carmen Sandiego?
 
 [![CI](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonorl/carmen-sandiego/actions/workflows/codeql.yml)
