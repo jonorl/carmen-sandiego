@@ -185,7 +185,7 @@ const TALL: Layout = Layout {
     text: Rect { x: 7.0, y: 360.0, w: 338.0, h: 276.0 },
     button_y: 640.0,
     picker: Rect { x: 4.0, y: 110.0, w: 344.0, h: 204.0 },
-    dossier: Rect { x: 4.0, y: 60.0, w: 344.0, h: 470.0 },
+    dossier: Rect { x: 4.0, y: 60.0, w: 344.0, h: 540.0 },
 };
 
 thread_local! {
