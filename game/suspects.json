@@ -159,10 +159,10 @@
       "vehicle": "bicycle",
       "other": "pretends to know some Japanese",
       "catchphrase": "Omae wa mo, shindeiru!",
-      "bio": "A mysterious international criminal whose technical abilities are matched only by his questionable knowledge of Japanese. Wanted for an assortment of suspicious technological activities.",
+      "bio": "Wanted for suspicious technological activities. His tech skills are matched only by his dubious Japanese.",
       "es": {
         "other": "se hace el que sabe algo de japonés",
-        "bio": "Un misterioso delincuente internacional cuyas habilidades tecnológicas solo son comparables con sus dudosos conocimientos de japonés. Se lo busca por una serie de actividades tecnológicas bastante sospechosas."
+        "bio": "Buscado por actividades tecnológicas sospechosas. Su talento técnico solo se compara con su dudoso japonés."
       }
     },
     {
@@ -174,10 +174,10 @@
       "vehicle": "car",
       "other": "has never been photographed without a red hat",
       "catchphrase": "You'll never catch me!",
-      "bio": "The original international super-thief. A master of disguise, geography and disappearing just when the authorities think they've caught up with her. Her whereabouts remain unknown.",
+      "bio": "The original super-thief. Master of disguise, geography and vanishing just as the authorities close in.",
       "es": {
         "other": "nunca fue fotografiada sin su sombrero rojo",
-        "bio": "La ladrona internacional más famosa del mundo. Maestra del disfraz, la geografía y el arte de desaparecer justo cuando las autoridades creen que están a punto de atraparla. Su paradero sigue siendo un misterio."
+        "bio": "La ladrona original. Maestra del disfraz, la geografía y el arte de esfumarse justo antes de que la atrapen."
       }
     },
     {
@@ -189,10 +189,10 @@
       "vehicle": "rollerskates",
       "other": "invites her victims to lunch before stealing their valuables",
       "catchphrase": "¡Carajo, qué pregunta!",
-      "bio": "A legendary television personality turned international art thief. Known for her impeccable table manners, extraordinary longevity and an uncanny ability to make priceless antiques disappear between courses. Her victims are often invited to lunch the following day.",
+      "bio": "TV legend turned art thief. Priceless antiques vanish between courses; her victims get invited to lunch.",
       "es": {
         "other": "invita a sus víctimas a almorzar antes de robarles sus pertenencias",
-        "bio": "Una legendaria figura de la televisión convertida en ladrona internacional de obras de arte. Conocida por sus impecables modales en la mesa, su extraordinaria longevidad y su increíble habilidad para hacer desaparecer antigüedades de valor incalculable entre plato y plato. Sus víctimas suelen recibir una invitación a almorzar al día siguiente."
+        "bio": "Leyenda de la tele y ladrona de arte: hace desaparecer antigüedades entre plato y plato. Sus víctimas, invitadas."
       }
     },
     {
@@ -204,10 +204,10 @@
       "vehicle": "public transport",
       "other": "insists he is worth more than the entire national treasury",
       "catchphrase": "¡Basta, chicos!",
-      "bio": "A fabulously wealthy criminal with an obsession for luxury cars, expensive jewellery and extravagant parties. Frequently steals things he could easily afford to buy. Believes money can solve absolutely everything.",
+      "bio": "Fabulously rich, yet steals things he could easily buy. Believes money solves absolutely everything.",
       "es": {
         "other": "insiste en que vale más que todo el tesoro nacional",
-        "bio": "Un delincuente fabulosamente rico, obsesionado con los autos de lujo, las joyas caras y las fiestas extravagantes. Suele robar cosas que tranquilamente podría comprarse. Está convencido de que con plata se soluciona absolutamente todo."
+        "bio": "Millonario que roba cosas que podría comprarse tranquilamente. Cree que con plata se arregla todo."
       }
     },
     {
@@ -219,10 +219,10 @@
       "vehicle": "car",
       "other": "occasionally threatens to dismantle the entire economy",
       "catchphrase": "¡Viva la libertad, carajo!",
-      "bio": "A self-proclaimed economic genius and professional chainsaw enthusiast. Wanted for the systematic dismantling of national economies, public institutions and occasionally household furniture. Travels with an unusually large collection of power tools.",
+      "bio": "Self-proclaimed economic genius and chainsaw enthusiast. Wanted for dismantling economies and the odd sofa.",
       "es": {
         "other": "a veces amenaza con desmantelar toda la economía",
-        "bio": "Un autoproclamado genio de la economía y entusiasta profesional de las motosierras. Se lo busca por desmantelar sistemáticamente economías nacionales, instituciones públicas y, de vez en cuando, algún que otro mueble. Viaja con una colección sospechosamente grande de herramientas eléctricas."
+        "bio": "Autoproclamado genio de la economía y fanático de la motosierra. Buscado por desmantelar economías y algún sillón."
       }
     },
     {
@@ -234,10 +234,10 @@
       "vehicle": "scooter",
       "other": "laughs suspiciously whenever someone mentions money",
       "catchphrase": "¡Hermosa mañana, verdad!",
-      "bio": "A charismatic master of impersonation who has infiltrated countless organisations. His greatest weakness is an uncontrollable laugh that tends to reveal his identity at the worst possible moment.",
+      "bio": "Master of impersonation, given away every time by an uncontrollable laugh at the worst possible moment.",
       "es": {
         "other": "se ríe sospechosamente cada vez que alguien menciona plata",
-        "bio": "Un carismático maestro de la imitación que logró infiltrarse en todo tipo de organizaciones. Su mayor debilidad es una risa incontrolable que suele delatarlo en el peor momento posible."
+        "bio": "Maestro de la imitación, siempre delatado por una risa incontrolable en el peor momento posible."
       }
     },
     {
@@ -249,10 +249,10 @@
       "vehicle": "public transport",
       "other": "has an unusually large collection of expensive handbags",
       "catchphrase": "¡Que alguien me explique esto!",
-      "bio": "A highly resourceful political operator with an impressive talent for making inconvenient evidence disappear. Allegedly maintains a secret underground collection of luxury handbags and suspiciously well-organised financial records.",
+      "bio": "Political operator with a gift for making inconvenient evidence disappear. Owns a great many handbags.",
       "es": {
         "other": "tiene una colección sospechosamente grande de carteras de lujo",
-        "bio": "Una hábil operadora política con un talento extraordinario para hacer desaparecer pruebas inconvenientes. Se sospecha que mantiene una colección secreta de carteras de lujo y registros financieros sospechosamente bien organizados."
+        "bio": "Operadora política con un don para hacer desaparecer pruebas incómodas. Tiene muchísimas carteras."
       }
     },
     {
@@ -264,10 +264,10 @@
       "vehicle": "car",
       "other": "always leaves a calling card at the scene of the crime",
       "catchphrase": "The world's most wanted thief strikes again!",
-      "bio": "The legendary gentleman thief and grandson of Arsène Lupin. A master of disguises, elaborate heists and impossible escapes. Often announces his next robbery well in advance, just to make things interesting.",
+      "bio": "Gentleman thief and grandson of Arsène Lupin. Announces his heists in advance, just to make it interesting.",
       "es": {
         "other": "siempre deja una tarjeta de presentación en la escena del crimen",
-        "bio": "El legendario ladrón de guante blanco y nieto de Arsène Lupin. Maestro del disfraz, los robos imposibles y las fugas espectaculares. Suele anunciar sus próximos golpes con bastante anticipación, simplemente para darle emoción al asunto."
+        "bio": "Ladrón de guante blanco, nieto de Arsène Lupin. Anuncia sus golpes de antemano, para darle emoción."
       }
     },
     {
@@ -279,10 +279,10 @@
       "vehicle": "bicycle",
       "other": "claims to be a mighty pirate despite being afraid of almost everything",
       "catchphrase": "I'm Guybrush Threepwood, mighty pirate!",
-      "bio": "A self-proclaimed mighty pirate with a remarkable talent for getting into trouble. Known for elaborate insults, questionable sword-fighting skills and an inexplicable ability to survive almost anything.",
+      "bio": "Self-proclaimed mighty pirate with a gift for trouble, elaborate insults and surviving almost anything.",
       "es": {
         "other": "afirma ser un temible pirata aunque le tiene miedo a casi todo",
-        "bio": "Un autoproclamado pirata temible con un talento extraordinario para meterse en problemas. Conocido por sus insultos elaborados, sus dudosas habilidades con la espada y su inexplicable capacidad para sobrevivir absolutamente a todo."
+        "bio": "Autoproclamado temible pirata, con talento para meterse en líos, insultar con estilo y sobrevivir a todo."
       }
     },
     {
@@ -294,10 +294,10 @@
       "vehicle": "scooter",
       "other": "writes elaborate algorithms to plan her robberies",
       "catchphrase": "The Analytical Engine has calculated your defeat!",
-      "bio": "A pioneering mathematical mastermind who developed the first known computer programs. Now uses her extraordinary analytical abilities to plan impossibly elaborate heists. Authorities suspect her crimes are several centuries ahead of their time.",
+      "bio": "Wrote the first computer programs. Now plans heists with algorithms centuries ahead of their time.",
       "es": {
         "other": "escribe algoritmos elaborados para planificar sus robos",
-        "bio": "Una mente matemática brillante que desarrolló algunos de los primeros programas informáticos de la historia. Hoy utiliza sus extraordinarias habilidades analíticas para planificar robos imposiblemente elaborados. Las autoridades sospechan que sus delitos están varios siglos adelantados a su época."
+        "bio": "Escribió los primeros programas informáticos. Hoy planea robos con algoritmos adelantados a su época."
       }
     },
     {
@@ -309,10 +309,10 @@
       "vehicle": "bicycle",
       "other": "only operates at night and carries an unusually large medical bag",
       "catchphrase": "I shall leave no stone unturned... or safe unopened.",
-      "bio": "A nocturnal criminal who uses her reputation for nursing to gain access to heavily guarded buildings. Specialises in late-night burglaries and disappearing before the morning shift. Always insists on maintaining impeccable hygiene.",
+      "bio": "Uses her nursing reputation to get into guarded buildings at night, and is gone before the morning shift.",
       "es": {
         "other": "solo opera de noche y lleva un maletín médico sospechosamente grande",
-        "bio": "Una delincuente nocturna que aprovecha su reputación como enfermera para acceder a edificios fuertemente custodiados. Se especializa en robos durante la madrugada y desaparece antes de que llegue el turno de la mañana. Insiste siempre en mantener una higiene impecable."
+        "bio": "Usa su fama de enfermera para entrar de noche a edificios custodiados y se esfuma antes del turno de la mañana."
       }
     },
     {
@@ -324,10 +324,10 @@
       "vehicle": "rollerskates",
       "other": "wears an extremely expensive suit of powered armour",
       "catchphrase": "Mission complete.",
-      "bio": "An intergalactic bounty hunter turned wanted criminal. Equipped with an advanced power suit, an impressive arsenal and absolutely no regard for property damage. Authorities advise against attempting to arrest her without adequate planetary insurance.",
+      "bio": "Intergalactic bounty hunter turned outlaw. Do not attempt an arrest without planetary insurance.",
       "es": {
         "other": "usa una armadura robótica extremadamente costosa",
-        "bio": "Una cazarrecompensas intergaláctica convertida en delincuente buscada. Equipada con una armadura de combate de última generación, un arsenal impresionante y un desprecio absoluto por la propiedad ajena. Las autoridades recomiendan no intentar detenerla sin antes contratar un seguro planetario."
+        "bio": "Cazarrecompensas intergaláctica devenida delincuente. No intentar detenerla sin un seguro planetario."
       }
     }
   ]
