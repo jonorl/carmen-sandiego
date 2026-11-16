@@ -2,7 +2,7 @@
 #   docker build -f server/Dockerfile .
 # Same Rust as rust-toolchain.toml (left out by .dockerignore, so rustup
 # doesn't fetch another toolchain mid-build); Dependabot bumps the tag.
-FROM rust:1.99.1-slim-bookworm AS build
+FROM rust:1.100.0-slim-bookworm AS build
 WORKDIR /src
 COPY . .
 RUN cargo build --release --locked -p carmen-server
